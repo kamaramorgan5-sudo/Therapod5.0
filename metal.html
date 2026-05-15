@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TherapyPod • AI Mental Wellness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --primary: 234 179 8;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .logo-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .chat-container {
+            height: calc(100vh - 80px);
+            max-height: 700px;
+        }
+
+        .message {
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mood-indicator {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .typing {
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .typing::after {
+            content: '•••';
+            animation: typingPulse 1.4s infinite;
+        }
+
+        @keyframes typingPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #1e2937 0%, #334155 100%);
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100">
+    <!-- NAVBAR -->
+    <nav class="bg-zinc-900 border-b border-zinc-800 fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="w-9 h-9 bg-yellow-400 rounded-2xl flex items-center justify-center text-zinc-950 font-bold text-2xl logo-font">T</div>
+                <div>
+                    <span class="logo-font text-2xl font-semibold tracking-tighter">TherapyPod</span>
+                </div>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                <a href="#how" class="hover:text-yellow-400 transition-colors">How it Works</a>
+                <a href="#features" class="hover:text-yellow-400 transition-colors">Features</a>
+                <a href="#chat" class="hover:text-yellow-400 transition-colors">Try the AI</a>
+                <a href="#" onclick="showPricing()" class="hover:text-yellow-400 transition-colors">$9/session</a>
+            </div>
+            
+            <div class="flex items-center gap-x-4">
+                <button onclick="toggleAuthModal()" 
+                        class="px-6 py-2.5 text-sm font-semibold border border-zinc-700 hover:border-zinc-400 rounded-2xl transition-colors">
+                    Login
+                </button>
+                <button onclick="startSession()" 
+                        class="px-6 py-2.5 bg-yellow-400 hover:bg-yellow-300 text-zinc-950 font-semibold rounded-2xl transition-all active:scale-95">
+                    Start Free Session
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero-bg pt-24 pb-20">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+            <div class="pt-12">
+                <div class="inline-flex items-center gap-x-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-3xl text-sm mb-6">
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span class="font-medium">LIVE IN KENYA • 24/7</span>
+                </div>
+                
+                <h1 class="text-6xl md:text-7xl font-semibold leading-none tracking-tighter logo-font mb-6">
+                    Mental health<br>support that<br>actually reaches<br><span class="text-yellow-400">Africa</span>.
+                </h1>
+                
+                <p class="text-xl text-zinc-400 max-w-md mb-10">
+                    TherapyPod is an AI companion built for the 1.4 billion people who need it most. 
+                    Culturally aware. Always available. Only $9.
+                </p>
+                
+                <div class="flex items-center gap-x-4">
+                    <button onclick="startSession()" 
+                            class="px-10 py-5 bg-yellow-400 hover:bg-amber-300 text-xl font-semibold text-zinc-950 rounded-3xl flex items-center gap-x-3 transition-all active:scale-[0.97]">
+                        <i class="fa-solid fa-message"></i>
+                        Talk to TherapyPod Now
+                    </button>
+                    
+                    <button onclick="document.getElementById('chat-section').scrollIntoView({ behavior: 'smooth' })" 
+                            class="px-8 py-5 border border-white/30 hover:border-white/60 rounded-3xl text-lg font-medium transition-all">
+                        Watch Demo
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-x-8 mt-12 text-sm">
+                    <div class="flex items-center gap-x-2">
+                        <div class="flex -space-x-4">
+                            <div class="w-7 h-7 bg-zinc-700 border-2 border-zinc-900 rounded-full"></div>
+                            <div class="w-7 h-7 bg-amber-300 border-2 border-zinc-900 rounded-full"></div>
+                        </div>
+                        <div>
+                            <div class="text-green-400 text-xs font-medium">98.4% felt better</div>
+                            <div class="text-zinc-500 text-xs">after first session</div>
+                        </div>
+                    </div>
+                    <div class="h-10 w-px bg-white/10"></div>
+                    <div>
+                        <div class="flex items-center gap-x-1 text-amber-400">
+                            ★★★★☆
+                        </div>
+                        <div class="text-xs text-zinc-400">4.9 from 347 users</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Floating Phone Mock -->
+            <div class="hidden md:flex justify-end">
+                <div class="relative">
+                    <div class="bg-zinc-900 p-3 rounded-[3rem] border border-zinc-700 shadow-2xl">
+                        <div class="bg-black rounded-[2.5rem] overflow-hidden w-80 h-[620px] relative">
+                            <!-- Status bar -->
+                            <div class="h-11 bg-black flex items-end justify-center text-[10px] text-zinc-400">9:41</div>
+                            
+                            <!-- Chat preview inside phone -->
+                            <div class="h-[calc(100%-44px)] bg-zinc-950 p-4 flex flex-col">
+                                <div class="bg-zinc-900 rounded-3xl p-4 mb-auto">
+                                    <div class="flex gap-x-3">
+                                        <div class="w-8 h-8 bg-yellow-400 rounded-2xl flex items-center justify-center text-xs font-bold text-black">T</div>
+                                        <div>
+                                            <div class="text-sm font-medium">TherapyPod</div>
+                                            <div class="text-[10px] text-green-400">Online • Listening</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-6 mt-8">
+                                    <div class="bg-zinc-800/70 rounded-3xl px-5 py-4 text-sm max-w-[85%]">
+                                        Hi Morgan, how are you feeling today?
+                                    </div>
+                                    <div class="bg-yellow-400 text-zinc-950 rounded-3xl px-5 py-4 text-sm max-w-[85%] ml-auto">
+                                        I've been really anxious about money lately.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mood badge -->
+                    <div class="absolute -top-3 -right-3 bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-3xl shadow-xl flex items-center gap-x-2">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                        <span id="live-mood">Calm • 82%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CHATBOT SECTION -->
+    <section id="chat-section" class="py-20 bg-zinc-900">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-x-2 bg-yellow-400/10 text-yellow-400 text-sm font-medium px-6 py-3 rounded-3xl mb-4">
+                    <i class="fa-solid fa-robot"></i>
+                    POWERED BY THERAPYPOD AI
+                </div>
+                <h2 class="text-5xl font-semibold tracking-tight logo-font">Speak with TherapyPod</h2>
+                <p class="text-zinc-400 mt-3 max-w-md mx-auto">Experience the same AI that is helping people across Africa right now.</p>
+            </div>
+            
+            <!-- Main Chat Interface -->
+            <div class="bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl chat-container flex flex-col mx-auto" style="max-width: 820px;">
+                <!-- Chat Header -->
+                <div class="bg-zinc-900 px-6 py-5 border-b border-zinc-800 flex items-center justify-between">
+                    <div class="flex items-center gap-x-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-yellow-300 to-amber-500 rounded-2xl flex items-center justify-center text-2xl shadow-inner">🧠</div>
+                        <div>
+                            <div class="font-semibold flex items-center gap-x-2">
+                                TherapyPod 
+                                <span class="inline-block w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                            </div>
+                            <div class="text-xs text-emerald-400 font-medium">Always here • Culturally tuned for you</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-x-6 text-sm">
+                        <div onclick="detectMood()" class="flex items-center gap-x-2 cursor-pointer hover:text-yellow-400 transition-colors">
+                            <i class="fa-solid fa-face-smile"></i>
+                            <span class="hidden sm:inline">Mood Check</span>
+                        </div>
+                        <div onclick="endSession()" class="text-red-400 hover:text-red-300 cursor-pointer flex items-center gap-x-1">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            <span class="hidden sm:inline">End Session</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Messages Area -->
+                <div id="chat-messages" class="flex-1 p-6 overflow-y-auto space-y-6 bg-[radial-gradient(#27272a_1px,transparent_1px)] bg-[length:30px_30px]">
+                    <!-- Messages injected by JS -->
+                </div>
+                
+                <!-- Mood Bar -->
+                <div class="px-6 py-3 bg-zinc-900 border-t border-zinc-800 flex items-center gap-x-4 text-xs">
+                    <div class="font-medium text-zinc-400">Current Mood:</div>
+                    <div id="current-mood" class="mood-indicator flex-1 h-2 bg-gradient-to-r from-red-500 via-yellow-400 to-emerald-400 rounded-full relative">
+                        <div id="mood-dot" class="absolute -top-1 w-5 h-5 bg-white shadow-lg border-2 border-yellow-400 rounded-full flex items-center justify-center text-[10px] left-1/2 -translate-x-1/2">😐</div>
+                    </div>
+                </div>
+                
+                <!-- Input Area -->
+                <div class="p-6 bg-zinc-900 border-t border-zinc-800">
+                    <form id="chat-form" class="flex gap-x-3">
+                        <input id="user-input" 
+                               type="text" 
+                               placeholder="Share what's on your mind..." 
+                               class="flex-1 bg-zinc-800 border border-zinc-700 focus:border-yellow-400 rounded-3xl px-7 py-6 outline-none text-base transition-all">
+                        <button type="submit"
+                                class="w-14 h-14 bg-yellow-400 hover:bg-amber-300 text-zinc-950 rounded-3xl flex items-center justify-center transition-all active:scale-95">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                    <div class="text-center text-[10px] text-zinc-500 mt-4">
+                        Your conversation is private • Crisis support available 24/7
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Prompts -->
+            <div class="max-w-2xl mx-auto mt-8 flex flex-wrap justify-center gap-3">
+                <button onclick="useQuickPrompt(this)" class="text-xs bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 px-5 py-3 rounded-3xl transition-colors">I'm feeling overwhelmed</button>
+                <button onclick="useQuickPrompt(this)" class="text-xs bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 px-5 py-3 rounded-3xl transition-colors">I can't sleep</button>
+                <button onclick="useQuickPrompt(this)" class="text-xs bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 px-5 py-3 rounded-3xl transition-colors">Family pressure is too much</button>
+                <button onclick="useQuickPrompt(this)" class="text-xs bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 px-5 py-3 rounded-3xl transition-colors">I'm worried about money</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="py-24 bg-black">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-zinc-900 p-8 rounded-3xl">
+                    <div class="w-12 h-12 bg-yellow-400/10 text-yellow-400 rounded-2xl flex items-center justify-center text-3xl mb-6">🌍</div>
+                    <h3 class="text-2xl font-semibold mb-3">Built for Africa</h3>
+                    <p class="text-zinc-400">Low-bandwidth optimized. Culturally sensitive language models trained on African contexts.</p>
+                </div>
+                <div class="bg-zinc-900 p-8 rounded-3xl">
+                    <div class="w-12 h-12 bg-yellow-400/10 text-yellow-400 rounded-2xl flex items-center justify-center text-3xl mb-6">🛡️</div>
+                    <h3 class="text-2xl font-semibold mb-3">Crisis Ready</h3>
+                    <p class="text-zinc-400">Real-time detection of suicidal thoughts and immediate guidance to local resources.</p>
+                </div>
+                <div class="bg-zinc-900 p-8 rounded-3xl">
+                    <div class="w-12 h-12 bg-yellow-400/10 text-yellow-400 rounded-2xl flex items-center justify-center text-3xl mb-6">📈</div>
+                    <h3 class="text-2xl font-semibold mb-3">9-State Mood Engine</h3>
+                    <p class="text-zinc-400">Tracks calm, anxious, angry, sad, hopeful, overwhelmed, lonely, grateful, and in-crisis.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black py-20 border-t border-zinc-900">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="flex justify-center mb-6">
+                <div class="flex items-center gap-x-3">
+                    <div class="w-8 h-8 bg-yellow-400 rounded-2xl flex items-center justify-center text-zinc-950 font-bold">T</div>
+                    <span class="logo-font text-3xl font-semibold">TherapyPod</span>
+                </div>
+            </div>
+            <p class="text-zinc-500 text-sm">Made with ❤️ in Nairobi, Kenya • For the continent and beyond</p>
+            <p class="text-[10px] text-zinc-600 mt-8">Demo only. Real TherapyPod is live at therapy-pod.xyz (coming soon)</p>
+        </div>
+    </footer>
+
+    <!-- PRICING MODAL -->
+    <div id="pricing-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-xl z-[100] flex items-center justify-center">
+        <div class="bg-zinc-900 rounded-3xl max-w-md w-full mx-4 overflow-hidden">
+            <div class="p-8">
+                <h2 class="text-3xl font-semibold mb-2">Choose Your Session</h2>
+                <p class="text-zinc-400">One session. Real support.</p>
+            </div>
+            
+            <div class="px-8 py-10 bg-black space-y-6">
+                <div onclick="selectPlan(1)" class="border-2 border-yellow-400 bg-zinc-900 p-6 rounded-3xl cursor-pointer hover:scale-[1.02] transition-all">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="text-4xl font-bold">$9</div>
+                            <div class="text-sm text-emerald-400">ONE SESSION</div>
+                        </div>
+                        <div class="text-right">
+                            <span class="px-4 py-1 bg-yellow-400 text-zinc-950 text-xs font-bold rounded-3xl">MOST POPULAR</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div onclick="selectPlan(5)" class="border border-zinc-700 p-6 rounded-3xl cursor-pointer hover:border-zinc-400 transition-all">
+                    <div class="flex justify-between">
+                        <div>
+                            <div class="text-4xl font-bold">$39</div>
+                            <div class="text-sm text-zinc-400">5 SESSIONS • Save $6</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-6 flex gap-x-4">
+                <button onclick="hidePricing()" 
+                        class="flex-1 py-6 border border-zinc-700 hover:bg-zinc-800 rounded-3xl font-medium">Cancel</button>
+                <button onclick="fakeCheckout()" 
+                        class="flex-1 py-6 bg-yellow-400 text-zinc-950 font-semibold rounded-3xl">Pay Securely with Stripe</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTH MODAL -->
+    <div id="auth-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-xl z-[100] flex items-center justify-center">
+        <div class="bg-zinc-900 w-full max-w-md mx-4 rounded-3xl p-8">
+            <h3 class="text-2xl font-semibold mb-8 text-center">Welcome back</h3>
+            <input type="email" id="email" placeholder="you@email.com" class="w-full bg-zinc-800 border border-zinc-700 rounded-3xl px-6 py-7 mb-4 outline-none">
+            <input type="password" placeholder="Password" class="w-full bg-zinc-800 border border-zinc-700 rounded-3xl px-6 py-7 mb-8 outline-none">
+            <button onclick="fakeLogin()" 
+                    class="w-full py-7 bg-white text-zinc-900 font-semibold rounded-3xl">Sign In</button>
+            <div onclick="hideAuthModal()" class="text-center mt-6 text-sm text-zinc-400 cursor-pointer">Close</div>
+        </div>
+    </div>
+
+    <script>
+        // Tailwind script already loaded via CDN
+        
+        let conversationHistory = [];
+        let curre
